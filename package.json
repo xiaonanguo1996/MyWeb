@@ -1,0 +1,16 @@
+{
+  "name": "myweb",
+  "version": "1.0.0",
+  "description": "this is a test.",
+  "main": "gulpfile.js",
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-less": "^3.3.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "xiaonanguo",
+  "license": "MIT"
+}

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta name="viewport" content="width=device-width">
+	<meta charset="utf-8">
+	<title>My ToDoList</title>
+	<link rel="stylesheet" type="text/css" href="lib/normalize.css">
+	<link rel="stylesheet" type="text/css" href="lib/jquery.datetimepicker.min.css">
+	<link rel="stylesheet" type="text/css" href="css/index.css">
+</head>
+<body>
+<div class="reminder">
+	<span class="reminder-content"></span><span class="known">知道了</span>
+</div>
+<div class="container">
+	<h1 class="task-title">我的ToDo列表清单</h1>
+	<div class="task-enter">
+		<input type="text" name="text-enter" placeholder="e.g. 下午记得买菜" autofocus autocomplete="off" />
+		<button type="submit" name="new-submit">Submit</button>
+		<button type="submit" name="delete-all">Delete All</button>
+	</div>
+	<div class="task-items">
+		<!--tasks list-->
+	</div>
+	<div class="task-items-delete">
+		<!--tasks list-->
+	</div>
+	<div class="item-detail-mask">
+		
+	</div>
+	<div class="item-detail">
+			<div class="item-title">
+				<label for="detail-name">标题</label>
+				<input type="text" name="detail-name" placeholder="e.g. 下午记得买菜" />
+			</div>
+			<div class="item-content">
+				<label for="detail-content">详细描述</label>
+				<textarea placeholder="" name="detail-content"></textarea>
+			</div>
+			<div class="item-reminder">
+				<label for="detail-date">定时提醒</label>
+				<input type="text" name="detail-date" value="" id="datetimepicker"/>
+			</div>
+			<button type="submit" name="detail-submit">Submit</button>
+		</div>
+</div>
+<audio src="music/hjm-glass_bell_1.wav" id="alert-music"></audio>
+<script type="text/javascript" src="lib/jquery.js"></script>
+<script type="text/javascript" src="lib/store.js"></script>
+<script type="text/javascript" src="lib/jquery.datetimepicker.full.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+</body>
+</html>

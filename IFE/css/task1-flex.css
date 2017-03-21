@@ -1,0 +1,134 @@
+body{
+	background:#CCC;
+}
+a{
+	text-decoration:none;
+	font-size:1.5em;
+}
+h1{
+	margin:0;
+	padding:0;
+}
+.item{
+	position:relative;
+	margin:0 auto;
+	padding:0;
+	width:60%;
+	display:flex;
+	flex-flow:nowrap column;
+	align-items:center;
+}
+
+.item img{
+	width:100%;
+	border-radius:10px;
+	transition:filter 0.5s;
+}
+.item:hover img{ 
+    -webkit-filter: blur(3px); /* Chrome, Opera */
+       -moz-filter: blur(3px);
+        -ms-filter: blur(3px);    
+            filter: blur(3px);
+}
+
+.item figcaption{
+	position:absolute;
+	top:45%;
+	width:80%;
+	display:flex;
+	flex-flow:nowrap column;
+	align-items:center;
+	opacity:0;
+	transition:all 1s;
+	z-index:3;
+}
+.item:hover figcaption{
+	opacity:1;
+	transform:translateY(-50%);
+}
+.item figcaption a{
+	margin-top:5%;
+}
+@media screen and (max-width: 850px){
+	.item figcaption h1{
+		font-size:1.2em;
+	}
+	.item figcaption a{
+		font-size:.8em;
+	}
+}
+
+.item::before{
+	content:'';
+	box-sizing:border-box;
+	position:absolute;
+	left:50%;
+	top:10%;
+	width:0;
+	height:80%;
+	border:solid #FFF;
+	border-width:4px 0 4px 0;
+	opacity:0;
+	z-index:2;
+	transition:all 1s;
+}
+.item:hover::before{
+	width:80%;
+	opacity:1;
+	margin-left:-40%;
+}
+.item::after{
+	content:'';
+	box-sizing:border-box;
+	position:absolute;
+	left:10%;
+	top:50%;
+	width:80%;
+	height:0;
+	border:solid #FFF;
+	border-width:0 3px 0 3px;
+	opacity:0;
+	z-index:2;
+	transition:all 1s;
+}
+.item:hover::after{
+	opacity:1;
+	height:80%;
+	transform:translateY(-50%);
+}
+
+.gradient-to-right{
+	background-image: linear-gradient(to left, #147B96, #E6D205 25%, #147B96 50%, #E6D205 75%, #147B96);
+	-webkit-text-fill-color:transparent;
+	-webkit-background-clip:text;
+	background-size:200% 100%;
+	animation:maskGradient 4s infinite linear;
+}
+@-webkit-keyframes maskGradient{
+	0%{
+		background-position:0 0;
+	}
+	100%{
+		background-position:-100% 0;
+	}
+}
+.gradient-color{
+	animation:changeColor 2s infinite linear;
+}
+@-webkit-keyframes changeColor{
+	0%{
+		color:white;
+	}
+	25%{
+		color:blue;
+	}
+	50%{
+		color:pink;
+	}
+	75%{
+		color:yellow;
+	}
+	100%{
+		color:white;
+	}
+}
