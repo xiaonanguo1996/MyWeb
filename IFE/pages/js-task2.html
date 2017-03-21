@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>IFE JavaScript Task 02</title>
+  </head>
+<body>
+
+  <h3>空气质量指数大于60的城市</h3>
+  <ul id="aqi-list">
+    
+  </ul>
+
+<script type="text/javascript">
+
+var aqiData = [
+  ["多拉多", 90],
+  ["上海", 50],
+  ["福州", 10],
+  ["达纳苏斯", 76],
+  ["济南", 48],
+  ["外域", 98],
+  ["艾兴瓦尔德", 98],
+  ["广州", 50],
+  ["木叶村", 90],
+  ["不存在的仙境", 100],
+  ["银月城", 98],
+  ["沈阳", 50],
+  ["致远星", 78]
+];
+console.log(aqiData);
+(function () {
+
+  var tmpData,
+      showData = [];
+  //先筛选出空气质量指数大于60的城市
+  for(var i = 0, len = aqiData.length; i < len; i ++){
+    tmpData = aqiData[i];
+    if(tmpData[1] > 60){
+        showData.push(tmpData);
+    }
+  }
+  //将数组进行排序整理
+  showData.sort(compare);
+  //比较函数
+  function compare(value1, value2){
+    if(value1[1] > value2[1]){
+      return -1;
+    }else if(value1[1] < value2[1]){
+      return 1;
+    }else{
+      return 0;
+    }
+  }
+  //以传递进去的数组来渲染页面
+  showList(showData);
+  function showList(list){
+    var aqiList = document.getElementById('aqi-list');
+    for(var i = 0, len = list.length; i < len; i ++){
+      var num = i + 1;
+      var itemContent = "第" + num + "名：" + list[i][0] + "，" + list[i][1];
+      var item = document.createElement('li');
+      item.innerHTML = itemContent;
+      aqiList.appendChild(item);
+    }
+  }
+
+})();
+
+</script>
+</body>
+</html>
