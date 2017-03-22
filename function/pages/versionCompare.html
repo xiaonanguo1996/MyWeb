@@ -125,11 +125,13 @@
 /*******************************************************************/
 
 	function versionCompare(v1,v2){
-		var reg = /^(\d*\.?)+$/;
-		if(reg.test(v1) && reg.test(v2) && v1 != '' && v2 != ''){
+		var reg = /\s*\d+\s*\.?(\s*\d*\s*\.?)*/;//如何实现\d与\.至少存在一个？
+		var match1 = reg.exec(v1);
+		var match2 = reg.exec(v2);
+		if(match1 != null && match2 != null){
 			//切割字符串数据
-			var array1 = v1.split('.');
-			var array2 = v2.split('.');
+			var array1 = match1[0].split('.');
+			var array2 = match2[0].split('.');
 			//将数组中的数据转换为整数并将空字符串转换为整数零
 			convertToInt(array1);
 			convertToInt(array2);
@@ -162,6 +164,7 @@
 					if(strArray[i] == ''){
 						strArray[i] = 0;
 					}else{
+						strArray[i] = /\s*\d*\s*/.exec(strArray[i])[0];
 						strArray[i] = parseInt(strArray[i]);
 					}
 				}
