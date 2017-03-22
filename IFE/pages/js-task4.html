@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>IFE JavaScript Task 04</title>
+    <style>
+
+      #controlDiv{
+        width:60%;
+        max-width:800px;
+        margin:20px auto;
+        padding:20px;
+        text-align:center;
+        background-color:#EEE;
+        border-radius:4px;
+      }
+      @media screen and (max-width: 680px){
+        #controlDiv{
+          width:90%;
+        }
+      }
+      #enterInput{
+        width:81%;
+        height:45px;
+        font-size:20px;
+        padding-left:5px;
+        border-radius:4px;
+        border:2px solid #f58178;
+        box-shadow:none;
+        outline:none;
+      }
+      input[type="button"]{
+        width:20%;
+        height:50px;
+        line-height:50px;
+        margin-top:20px;
+        color:#FFF;
+        font-size:20px;
+        text-shadow:1px 1px 4px rgba(0,0,0,0.3);
+        background-color:#FF5D50;
+        border:none;
+        border-radius:4px;
+        box-shadow:0 1px 2px 1px rgba(0,0,0,0.3);
+        cursor:pointer;
+        outline:none;
+        transition:background-color 0.5s;
+      }
+      input[type="button"]:hover,.item:hover{
+        background-color:#f58178;
+      }
+      #showDiv{
+        text-align:center;
+      }
+      .item{
+        display: inline-block;
+        margin:5px;
+        padding:5px;
+        min-width:60px;
+        height:40px;
+        line-height:40px;
+        text-align:center;
+        color:#FFF;
+        font-size:18px;
+        text-shadow:1px 1px 4px rgba(0,0,0,0.3);
+        background-color:#FF5D50;
+        cursor:pointer;
+        transition:background-color 0.5s;
+      }
+
+    </style>
+  </head>
+<body>
+  <div id="controlDiv">
+    <input type="text" id="enterInput" placeholder="在此处输出要添加的方块内容">
+    <input type="button" id="button1" value="左侧入">
+    <input type="button" id="button2" value="右侧入">
+    <input type="button" id="button3" value="左侧出">
+    <input type="button" id="button4" value="右侧出">
+  </div>
+  <div id="showDiv"></div>
+<script type="text/javascript">
+
+(function () {
+
+  //(除了引用jQuery库之外，难道都要自己写这个来减少代码量么？)
+  //(还是说有别的框架也自带DOM选择功能？)
+  function $ID(id){
+    return document.getElementById(id);
+  }
+  var data = [],
+      enter = $ID('enterInput'),
+      button1 = $ID('button1'),
+      button2 = $ID('button2'),
+      button3 = $ID('button3'),
+      button4 = $ID('button4'),
+      showDiv = $ID('showDiv');
+
+  //控制台按钮绑定事件
+  enter.addEventListener('keyup',function(event){
+    if(event.keyCode == 13){
+      if(regex()){
+        data.push(enter.value);
+        enter.value = '';
+        render(data);
+      }
+    }
+  },false);
+  button1.addEventListener('click',function(){
+    if(regex()){
+        data.unshift(enter.value);
+        enter.value = '';
+        render(data);
+    }
+  },false);
+  button2.addEventListener('click',function(){
+    if(regex()){
+        data.push(enter.value);
+        enter.value = '';
+        render(data);
+    }
+  },false);
+  button3.addEventListener('click',function(){
+    if(data.length > 0){
+      alert(data.shift() + ' 要跑了~');
+      render(data);
+    }else{
+      alert('没数了，点个毛啊~');
+    }
+  },false);
+  button4.addEventListener('click',function(){
+    if(data.length > 0){
+      alert(data.pop() + ' 要跑了~');
+      render(data);
+    }else{
+      alert('没数了，点个毛啊~');
+    }
+  },false);
+
+  //正则验证输入内容
+  function regex(){
+    var reg = /^\d+$/;
+    if(reg.test(enter.value)){
+      return true;
+    }else{
+      alert('好好输入一个数字不行嘛~')
+      return false;
+    }
+  }
+  //render data
+  function render(data){
+    showDiv.innerHTML = '';
+    for(var i = 0, len = data.length; i < len; i ++){
+      showDiv.innerHTML += "<div class='item'>" + data[i] + "</div>";
+    }
+    //为每一个item绑定点击删除事件
+    //(方法有待改进，因为每次render都重新绑定所有点击删除事件。)
+    var divItems = showDiv.getElementsByTagName('div');
+    var len = divItems.length;
+    //传说中的闭包终于知道什么时候用了
+    for(var i = 0; i < len; i ++){
+      divItems[i].addEventListener('click',function(num){
+        return function(){
+          data.splice(num,1);
+          render(data);
+        }
+      }(i),false);   
+    }
+  }
+
+})();
+
+</script>
+</body>
+</html>
