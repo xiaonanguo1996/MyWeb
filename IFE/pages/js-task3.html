@@ -1,0 +1,106 @@
+<!DOCTYPE>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>IFE JavaScript Task 03</title>
+  </head>
+<body>
+
+  <ul id="source">
+    <li>艾欧尼亚空气质量：<b>90</b></li>
+    <li>德拉诺空气质量：<b>70</b></li>
+    <li>皮尔特沃夫空气质量：<b>80</b></li>
+    <li>诺克萨斯空气质量：<b>50</b></li>
+    <li>伊里奥斯空气质量：<b>40</b></li>
+    <li>生态监测站·南极洲空气质量：<b>32</b></li>
+    <li>桃花源空气质量：<b>90</b></li>
+  </ul>
+  <h3>空气质量由好到差排列为：</h3>
+  <button id="sort-btn">排序</button>
+  <ul id="resort">
+    <!-- 
+    <li>第一名：北京空气质量：<b>90</b></li>
+    <li>第二名：北京空气质量：<b>90</b></li>
+    <li>第三名：北京空气质量：<b>90</b></li>
+     -->
+
+  </ul>
+
+<script type="text/javascript">
+
+//初始化
+init();
+function init() {
+  var button = document.getElementById('sort-btn');
+  button.addEventListener('click',btnHandle,false);
+}
+//给排序按钮绑定click事件
+function btnHandle() {
+  var aqiData = getData(document.getElementById('source'));
+  aqiData = sortAqiData(aqiData);
+  render(aqiData);
+}
+
+//从DOM中提取出数据返回初始数组
+function getData(list) {
+  var data = [];
+  var dataSheet = list.getElementsByTagName('li');
+  for(var i = 0, len = dataSheet.length; i < len; i ++){
+    //简易检测初始数据格式
+    if(!dataSheet[i].innerHTML.indexOf('空气质量')){
+      alert('这数据里有毒~')
+      return false;
+    }
+    var index = dataSheet[i].innerHTML.indexOf('空气质量');
+    var city = dataSheet[i].innerHTML.slice(0,index);
+    var value = parseInt(dataSheet[i].getElementsByTagName('b')[0].innerHTML);
+    data.push([city, value]);
+  }
+  return data;
+}
+//将初始数组 排序并返回
+function sortAqiData(data) {
+  data.sort(compare);
+  //比较函数
+  function compare(value1, value2){
+    if(value1[1] > value2[1]){
+      return -1;
+    }else if(value1[1] < value2[1]){
+      return 1;
+    }else{
+      return 0;
+    }
+  }
+  return data;
+}
+
+//render
+function render(data) {
+  var resort = document.getElementById('resort');
+  var presentLi = resort.getElementsByTagName('li');
+  if(presentLi.length != 0){
+    resort.innerHTML = '';
+  }
+    for(var i = 0, len = data.length; i < len; i ++){
+      var num = NumToC(i + 1);
+      var itemContent = "第" + num + "名：" + data[i][0] + "空气质量：<b>" + data[i][1] + "</b>";
+      var item = document.createElement('li');
+      item.innerHTML = itemContent;
+      resort.appendChild(item);
+    }
+}
+//Number转换为汉字
+function NumToC(num){
+  var N = ["零", "一", "二", "三", "四", "五", "六", "七", "八", "九"];
+  var str = num.toString();
+  var len = num.toString().length;
+  var C_Num = [];
+  for(var i = 0; i < len; i++){
+      C_Num.push(N[str.charAt(i)]);
+  }
+  return C_Num.join('');
+}
+
+</script>
+</body>
+</html>
