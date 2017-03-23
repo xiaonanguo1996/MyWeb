@@ -14,6 +14,7 @@
         text-align:center;
         background-color:#EEE;
         border-radius:4px;
+        box-shadow:0 1px 2px 1px rgba(0,0,0,0.3);
       }
       @media screen and (max-width: 680px){
         #controlDiv{
@@ -31,7 +32,7 @@
         outline:none;
       }
       input[type="button"]{
-        width:20%;
+        width:13%;
         height:50px;
         line-height:50px;
         margin-top:20px;
@@ -46,23 +47,31 @@
         outline:none;
         transition:background-color 0.5s;
       }
+      @media screen and (max-width: 800px){
+        input[type="button"]{
+          font-size:16px;
+        }
+      }
       input[type="button"]:hover,.item:hover{
         background-color:#f58178;
       }
       #showDiv{
-        text-align:center;
+        display:flex;
+        justify-content:center;
+        align-items:flex-end;
+        flex-flow:row wrap;
+        max-width:900px;
+        margin:0 auto;
+        height:120px;
       }
       .item{
-        display: inline-block;
-        margin:5px;
-        padding:5px;
-        min-width:60px;
-        height:40px;
-        line-height:40px;
+        margin:20px 5px;
+        min-width:30px;
         text-align:center;
         color:#FFF;
         font-size:18px;
         text-shadow:1px 1px 4px rgba(0,0,0,0.3);
+        box-shadow:0 1px 2px 1px rgba(0,0,0,0.3);
         background-color:#FF5D50;
         cursor:pointer;
         transition:background-color 0.5s;
@@ -73,10 +82,14 @@
 <body>
   <div id="controlDiv">
     <input type="text" id="enterInput" placeholder="在此处输出要添加的方块内容">
-    <input type="button" id="button1" value="左侧入">
-    <input type="button" id="button2" value="右侧入">
-    <input type="button" id="button3" value="左侧出">
-    <input type="button" id="button4" value="右侧出">
+    <div>
+      <input type="button" id="button1" value="左侧入">
+      <input type="button" id="button2" value="右侧入">
+      <input type="button" id="button3" value="左侧出">
+      <input type="button" id="button4" value="右侧出">
+      <input type="button" id="button5" value="排序-1">
+      <input type="button" id="button6" value="排序-2">
+    </div>
   </div>
   <div id="showDiv"></div>
 <script type="text/javascript">
@@ -94,11 +107,17 @@
       button2 = $ID('button2'),
       button3 = $ID('button3'),
       button4 = $ID('button4'),
+      button5 = $ID('button5'),
+      button6 = $ID('button6'),
       showDiv = $ID('showDiv');
 
   //控制台按钮绑定事件
   enter.addEventListener('keyup',function(event){
     if(event.keyCode == 13){
+      if(data.length == 60){
+        alert('已经达到最大输入量60');
+        return;
+      }
       if(regex()){
         data.push(enter.value);
         enter.value = '';
@@ -107,6 +126,10 @@
     }
   },false);
   button1.addEventListener('click',function(){
+    if(data.length == 60){
+        alert('已经达到最大输入量60');
+        return;
+      }
     if(regex()){
         data.unshift(enter.value);
         enter.value = '';
@@ -114,6 +137,10 @@
     }
   },false);
   button2.addEventListener('click',function(){
+    if(data.length == 60){
+        alert('已经达到最大输入量60');
+        return;
+      }
     if(regex()){
         data.push(enter.value);
         enter.value = '';
@@ -136,14 +163,29 @@
       alert('没数了，点个毛啊~');
     }
   },false);
-
+  //绑定点击排序事件
+  //通过数组sort()实现排序
+  button5.addEventListener('click',function(){
+    data.sort(compare);
+    function compare(value1,value2){
+      return value1 - value2;
+    }
+    render(data);
+  },false);
+  //通过CSS3-flex-order属性实现排序
+  button6.addEventListener('click',function(){
+    var items = showDiv.getElementsByTagName('div');
+    for(var i = 0, len = items.length; i < len; i ++){
+      items[i].style.order = data[i];
+    }
+  },false);
   //正则验证输入内容
   function regex(){
     var reg = /^\d+$/;
-    if(reg.test(enter.value)){
+    if(reg.test(enter.value) && enter.value >= 10 && enter.value <= 100){
       return true;
     }else{
-      alert('好好输入一个数字不行嘛~')
+      alert('好好输入一个10-100数字不行嘛~');
       return false;
     }
   }
@@ -151,7 +193,7 @@
   function render(data){
     showDiv.innerHTML = '';
     for(var i = 0, len = data.length; i < len; i ++){
-      showDiv.innerHTML += "<div class='item'>" + data[i] + "</div>";
+      showDiv.innerHTML += "<div class='item' style='height:" + data[i] + "px; order:0'>" + data[i] + "</div>";
     }
     //为每一个item绑定点击删除事件
     //(方法有待改进，因为每次render都重新绑定所有点击删除事件。)
@@ -163,7 +205,7 @@
         return function(){
           data.splice(num,1);
           render(data);
-        }
+        };
       }(i),false);   
     }
   }
