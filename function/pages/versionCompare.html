@@ -91,7 +91,7 @@
 			<input type="text" id="version2" placeholder="请输入一个版本号">
 			<input type="button" name="" id="compare" value="比 较">
 		</div>
-		<div id="result">此处显示比较结果</div>
+		<div id="result">函数返回值</div>
 		<div class="intro">
 			versionCompare(v1,v2)函数返回值：
 			<ul>
@@ -125,7 +125,7 @@
 /*******************************************************************/
 
 	function versionCompare(v1,v2){
-		var reg = /\s*\d+\s*\.?(\s*\d*\s*\.?)*/;//如何实现\d与\.至少存在一个？
+		var reg = /\s*\d+\s*\.?(\s*\d*\s*\.?)*/;//如何实现\d与\.至少存在一个
 		var match1 = reg.exec(v1);
 		var match2 = reg.exec(v2);
 		if(match1 != null && match2 != null){
