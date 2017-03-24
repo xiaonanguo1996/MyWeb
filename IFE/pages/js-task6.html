@@ -22,7 +22,7 @@
       }
       #enterInput{
         width:81%;
-        height:45px;
+        height:100px;
         font-size:20px;
         padding-left:5px;
         border-radius:4px;
@@ -49,6 +49,15 @@
       input[type="button"]:hover,.item:hover{
         background-color:#f58178;
       }
+      #search{
+        width:61%;
+        height:40px;
+        padding-left:5px;
+        border-radius:4px;
+        border:2px solid #f58178;
+        font-size:20px;
+        outline:none;
+      }
       #showDiv{
         text-align:center;
       }
@@ -72,19 +81,21 @@
   </head>
 <body>
   <div id="controlDiv">
-    <input type="text" id="enterInput" placeholder="在此处输入要添加的方块内容">
+    <textarea type="text" id="enterInput" placeholder="在此处输入要添加的方块内容，允许一次批量输入多个内容，格式可以为数字、中文、英文等，可以通过用回车，逗号（全角半角均可），顿号，空格（全角半角、Tab等均可）等符号作为不同内容的间隔"></textarea>
     <input type="button" id="button1" value="左侧入">
     <input type="button" id="button2" value="右侧入">
     <input type="button" id="button3" value="左侧出">
     <input type="button" id="button4" value="右侧出">
+    <div>
+      <input type="text" id="search" placeholder="请输入查询内容">
+      <input type="button" id="button5" value="查询">
+    </div>
   </div>
   <div id="showDiv"></div>
 <script type="text/javascript">
 
 (function () {
 
-  //(除了引用jQuery库之外，难道都要自己写这个来减少代码量么？)
-  //(还是说有别的框架也自带DOM选择功能？)
   function $ID(id){
     return document.getElementById(id);
   }
@@ -94,31 +105,26 @@
       button2 = $ID('button2'),
       button3 = $ID('button3'),
       button4 = $ID('button4'),
+      button5 = $ID('button5'),
+      search = $ID('search'),
       showDiv = $ID('showDiv');
 
   //控制台按钮绑定事件
-  enter.addEventListener('keyup',function(event){
-    if(event.keyCode == 13){
-      if(regex()){
-        data.push(enter.value);
-        enter.value = '';
-        render(data);
-      }
-    }
-  },false);
   button1.addEventListener('click',function(){
-    if(regex()){
-        data.unshift(enter.value);
-        enter.value = '';
-        render(data);
+    var addData = divide(enter.value);
+    for(var i = 0, len = addData.length; i < len; i ++){
+      data.unshift(addData[i]);
     }
+    enter.value = '';
+    render(data);
   },false);
   button2.addEventListener('click',function(){
-    if(regex()){
-        data.push(enter.value);
-        enter.value = '';
-        render(data);
+    var addData = divide(enter.value);
+    for(var i = 0, len = addData.length; i < len; i ++){
+      data.push(addData[i]);
     }
+    enter.value = '';
+    render(data);
   },false);
   button3.addEventListener('click',function(){
     if(data.length > 0){
@@ -136,21 +142,34 @@
       alert('没数了，点个毛啊~');
     }
   },false);
-
-  //正则验证输入内容
-  function regex(){
-    var reg = /^\d+$/;
-    if(reg.test(enter.value)){
-      return true;
-    }else{
-      alert('好好输入一个数字不行嘛~')
-      return false;
+  //绑定点击查询事件
+  button5.addEventListener('click',function(){
+    var value = search.value;
+    var reg = new RegExp(value,'');
+    var divs = showDiv.getElementsByTagName('div');
+    for(var i = 0, len = data.length; i < len; i ++){
+      if(reg.test(data[i])){
+        divs[i].style.backgroundColor = 'red';
+      }else{
+        divs[i].style.backgroundColor = '#FF5D50';
+      }
     }
+  },false);
+  //切割输入内容,整理添加数组
+  function divide(str){
+    var addData = [];
+    var reg = /[\s\|,，、]+/gm;
+    var str = str.replace(reg, ",");
+    addData = str.split(',');
+    return addData;
   }
   //render data
   function render(data){
     showDiv.innerHTML = '';
     for(var i = 0, len = data.length; i < len; i ++){
+      if(data[i] == ''){
+        continue;
+      }
       showDiv.innerHTML += "<div class='item'>" + data[i] + "</div>";
     }
     //为每一个item绑定点击删除事件
